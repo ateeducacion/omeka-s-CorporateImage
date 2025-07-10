@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace IsolatedSites\Form;
+namespace PersonalizedHeaderFooter\Form;
 
 use Laminas\Form\Element;
 use Laminas\Form\Form;
@@ -14,17 +14,28 @@ class ConfigForm extends Form
     public function init(): void
     {
         $this->add([
-            'name' => 'activate_IsolatedSites_cb',
-            'type' => Element\Checkbox::class,
+            'name' => 'personalized_header_html',
+            'type' => Element\Textarea::class,
             'options' => [
-                'label' => 'Enable this option to hide unallowed sites ',
-                'use_hidden_element' => true,
-                'checked_value' => '1',
-                'unchecked_value' => '0',
+                'label' => 'Personalized Header HTML',
+                'info' => 'Enter the HTML content for the personalized header. This will be displayed at the top of public pages.',
             ],
             'attributes' => [
-                'required' => false,
-                'id' => 'activate_IsolatedSites_cb'
+                'id' => 'personalized_header_html',
+                'rows' => 10,
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'personalized_footer_html',
+            'type' => Element\Textarea::class,
+            'options' => [
+                'label' => 'Personalized Footer HTML',
+                'info' => 'Enter the HTML content for the personalized footer. This will be displayed at the bottom of public pages.',
+            ],
+            'attributes' => [
+                'id' => 'personalized_footer_html',
+                'rows' => 10,
             ],
         ]);
     }

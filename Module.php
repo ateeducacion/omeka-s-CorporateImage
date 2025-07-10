@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ModuleTemplate;
+namespace PersonalizedHeaderFooter;
 
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
@@ -11,13 +11,15 @@ use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Module\AbstractModule;
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
-use ModuleTemplate\Form\ConfigForm;
+use PersonalizedHeaderFooter\Form\ConfigForm;
 
 /**
- * Main class for the IsoltatedSites module.
+ * Main class for the PersonalizedHeaderFooter module.
  */
 class Module extends AbstractModule
 {
+    public const NAMESPACE = __NAMESPACE__;
+
     /**
      * Retrieve the configuration array.
      *
@@ -36,8 +38,12 @@ class Module extends AbstractModule
     public function install(ServiceLocatorInterface $serviceLocator)
     {
         $messenger = new Messenger();
-        $message = new Message("ModuleTemplate module installed.");
+        $message = new Message("PersonalizedHeaderFooter module installed.");
         $messenger->addSuccess($message);
+        // Default settings
+        $settings = $serviceLocator->get('Omeka\Settings');
+        $settings->setForModule(self::NAMESPACE, 'personalized_header_html', '');
+        $settings->setForModule(self::NAMESPACE, 'personalized_footer_html', '');
     }
     /**
      * Execute logic when the module is uninstalled.
@@ -47,8 +53,13 @@ class Module extends AbstractModule
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
         $messenger = new Messenger();
-        $message = new Message("ModuleTemplate module uninstalled.");
+        $message = new Message("PersonalizedHeaderFooter module uninstalled.");
         $messenger->addWarning($message);
+
+        // Remove settings
+        $settings = $serviceLocator->get('Omeka\Settings');
+        $settings->deleteForModule(self::NAMESPACE, 'personalized_header_html');
+        $settings->deleteForModule(self::NAMESPACE, 'personalized_footer_html');
     }
     
     /**
@@ -70,14 +81,14 @@ class Module extends AbstractModule
     public function getConfigForm(PhpRenderer $renderer)
     {
         $services = $this->getServiceLocator();
-        $config = $services->get('Config');
         $settings = $services->get('Omeka\Settings');
         
         $form = new ConfigForm;
         $form->init();
         
         $form->setData([
-            'activate_ModuleTemplate_cb' => $settings->get('activate_ModuleTemplate', 1),
+            'personalized_header_html' => $settings->getForModule(self::NAMESPACE, 'personalized_header_html'),
+            'personalized_footer_html' => $settings->getForModule(self::NAMESPACE, 'personalized_footer_html'),
         ]);
         
         return $renderer->formCollection($form, false);
@@ -93,12 +104,10 @@ class Module extends AbstractModule
         $services = $this->getServiceLocator();
         $settings = $services->get('Omeka\Settings');
         
-        $config = $controller->params()->fromPost();
+        $params = $controller->params()->fromPost();
 
-        $value = isset($config['activate_ModuleTemplate_cb']) ? $config['activate_ModuleTemplate_cb'] : 0;
-
-        // Save configuration settings in omeka settings database
-        $settings->set('activate_ModuleTemplate', $value);
+        $settings->setForModule(self::NAMESPACE, 'personalized_header_html', $params['personalized_header_html']);
+        $settings->setForModule(self::NAMESPACE, 'personalized_footer_html', $params['personalized_footer_html']);
     }
     
     // /**
