@@ -145,9 +145,14 @@ class Module extends AbstractModule
      */
     private function getModuleSetting($settings, string $name, $default = null)
     {
-        $value = $settings->get($this->getSettingKey($name), null);
-        if (null !== $value || !method_exists($settings, 'getForModule')) {
-            return null !== $value ? $value : $default;
+        $missing = new \stdClass();
+        $value = $settings->get($this->getSettingKey($name), $missing);
+        if ($missing !== $value) {
+            return $value;
+        }
+
+        if (!method_exists($settings, 'getForModule')) {
+            return $default;
         }
 
         $value = $settings->getForModule(self::NAMESPACE, $name);

@@ -164,6 +164,27 @@ namespace ModuleTemplateTest {
             );
         }
 
+        public function testGenericNullValueDoesNotFallBackToLegacyStorage(): void
+        {
+            $settings = new LegacyAwareSettingsStub();
+            $settings->set('personalized_header_footer_personalized_header_html', null);
+            $settings->setForModule(
+                Module::NAMESPACE,
+                'personalized_header_html',
+                '<header>Legacy</header>'
+            );
+
+            $module = new Module();
+
+            $this->assertNull(
+                $this->invokeModuleMethod(
+                    $module,
+                    'getModuleSetting',
+                    [$settings, 'personalized_header_html', '']
+                )
+            );
+        }
+
         /**
          * @param array<int, mixed> $arguments
          * @return mixed
