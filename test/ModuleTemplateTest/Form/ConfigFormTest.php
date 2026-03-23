@@ -1,11 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
-namespace ModuleTemplates\Form;
+namespace ModuleTemplateTest\Form;
 
-use PHPUnit\Framework\TestCase;
-use ModuleTemplates\Form\ConfigForm;
-use Laminas\Form\Element;
 use Laminas\Form\Form;
+use PersonalizedHeaderFooter\Form\ConfigForm;
+use PHPUnit\Framework\TestCase;
 
 class ConfigFormTest extends TestCase
 {

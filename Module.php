@@ -19,6 +19,7 @@ use PersonalizedHeaderFooter\Form\ConfigForm;
 class Module extends AbstractModule
 {
     public const NAMESPACE = __NAMESPACE__;
+    private const SETTING_KEY_PREFIX = 'personalized_header_footer_';
 
     /**
      * Retrieve the configuration array.
@@ -42,8 +43,8 @@ class Module extends AbstractModule
         $messenger->addSuccess($message);
         // Default settings
         $settings = $serviceLocator->get('Omeka\Settings');
-        $settings->setForModule(self::NAMESPACE, 'personalized_header_html', '');
-        $settings->setForModule(self::NAMESPACE, 'personalized_footer_html', '');
+        $this->setModuleSetting($settings, 'personalized_header_html', '');
+        $this->setModuleSetting($settings, 'personalized_footer_html', '');
     }
     /**
      * Execute logic when the module is uninstalled.
@@ -58,8 +59,8 @@ class Module extends AbstractModule
 
         // Remove settings
         $settings = $serviceLocator->get('Omeka\Settings');
-        $settings->deleteForModule(self::NAMESPACE, 'personalized_header_html');
-        $settings->deleteForModule(self::NAMESPACE, 'personalized_footer_html');
+        $this->deleteModuleSetting($settings, 'personalized_header_html');
+        $this->deleteModuleSetting($settings, 'personalized_footer_html');
     }
     
     /**
@@ -87,8 +88,8 @@ class Module extends AbstractModule
         $form->init();
         
         $form->setData([
-            'personalized_header_html' => $settings->getForModule(self::NAMESPACE, 'personalized_header_html'),
-            'personalized_footer_html' => $settings->getForModule(self::NAMESPACE, 'personalized_footer_html'),
+            'personalized_header_html' => $this->getModuleSetting($settings, 'personalized_header_html', ''),
+            'personalized_footer_html' => $this->getModuleSetting($settings, 'personalized_footer_html', ''),
         ]);
         
         return $renderer->formCollection($form, false);
@@ -106,9 +107,68 @@ class Module extends AbstractModule
         
         $params = $controller->params()->fromPost();
 
-        $settings->setForModule(self::NAMESPACE, 'personalized_header_html', $params['personalized_header_html']);
-        $settings->setForModule(self::NAMESPACE, 'personalized_footer_html', $params['personalized_footer_html']);
+        $this->setModuleSetting($settings, 'personalized_header_html', $params['personalized_header_html']);
+        $this->setModuleSetting($settings, 'personalized_footer_html', $params['personalized_footer_html']);
     }
     
-    // /**
+    /**
+     * Build a unique settings key compatible with generic Omeka settings APIs.
+     */
+    private function getSettingKey(string $name): string
+    {
+        return self::SETTING_KEY_PREFIX . $name;
+    }
+
+    /**
+     * Persist a module setting using the generic settings API and, when
+     * available, the module-specific API for compatibility with newer Omeka
+     * versions.
+     *
+     * @param object $settings
+     * @param mixed $value
+     */
+    private function setModuleSetting($settings, string $name, $value): void
+    {
+        $settings->set($this->getSettingKey($name), $value);
+        if (method_exists($settings, 'setForModule')) {
+            $settings->setForModule(self::NAMESPACE, $name, $value);
+        }
+    }
+
+    /**
+     * Retrieve a module setting, preferring the generic key and falling back to
+     * legacy module-scoped storage when available.
+     *
+     * @param object $settings
+     * @param mixed $default
+     * @return mixed
+     */
+    private function getModuleSetting($settings, string $name, $default = null)
+    {
+        $missing = new \stdClass();
+        $value = $settings->get($this->getSettingKey($name), $missing);
+        if ($missing !== $value) {
+            return $value;
+        }
+
+        if (!method_exists($settings, 'getForModule')) {
+            return $default;
+        }
+
+        $value = $settings->getForModule(self::NAMESPACE, $name);
+        return null !== $value ? $value : $default;
+    }
+
+    /**
+     * Remove a module setting from all supported storage strategies.
+     *
+     * @param object $settings
+     */
+    private function deleteModuleSetting($settings, string $name): void
+    {
+        $settings->delete($this->getSettingKey($name));
+        if (method_exists($settings, 'deleteForModule')) {
+            $settings->deleteForModule(self::NAMESPACE, $name);
+        }
+    }
 }
