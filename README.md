@@ -1,4 +1,4 @@
-# Omeka S Module Template
+# Omeka S Module CorporateImage
 
 <a href="https://ateeducacion.github.io/omeka-s-playground/?blueprint=https%3A%2F%2Fraw.githubusercontent.com%2Fateeducacion%2Fomeka-s-CorporateImage%2Frefs%2Fheads%2Fmain%2Fblueprint.json">
   <img src="https://raw.githubusercontent.com/ateeducacion/omeka-s-CorporateImage/refs/heads/main/.github/assets/playground-preview-button.svg" alt="Try this module in your browser" width="224">
