@@ -14,7 +14,7 @@ use Omeka\Stdlib\Message;
 use PersonalizedHeaderFooter\Form\ConfigForm;
 
 /**
- * Main class for the PersonalizedHeaderFooter module.
+ * Main class for the Corporate Image module.
  */
 class Module extends AbstractModule
 {
@@ -39,7 +39,7 @@ class Module extends AbstractModule
     public function install(ServiceLocatorInterface $serviceLocator)
     {
         $messenger = new Messenger();
-        $message = new Message("PersonalizedHeaderFooter module installed.");
+        $message = new Message("Corporate Image module installed.");
         $messenger->addSuccess($message);
         // Default settings
         $settings = $serviceLocator->get('Omeka\Settings');
@@ -54,7 +54,7 @@ class Module extends AbstractModule
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
         $messenger = new Messenger();
-        $message = new Message("PersonalizedHeaderFooter module uninstalled.");
+        $message = new Message("Corporate Image module uninstalled.");
         $messenger->addWarning($message);
 
         // Remove settings
