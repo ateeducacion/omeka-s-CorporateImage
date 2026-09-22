@@ -5,3 +5,9 @@ blueprint.json           export-ignore
 /.claude export-ignore
 /AGENTS.md export-ignore
 /CLAUDE.md export-ignore
+
+/codecov.yml export-ignore
+/coverage.xml export-ignore
+/.phpunit.cache export-ignore
+/.phpunit.result.cache export-ignore
+/test/ export-ignore
