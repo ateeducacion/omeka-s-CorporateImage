@@ -30,4 +30,6 @@ jobs:
           use_oidc: true
           files: coverage.xml
           disable_search: true
+          # Composer replaces tracked vendor files; Clover already identifies executable lines.
+          disable_file_fixes: true
           fail_ci_if_error: true

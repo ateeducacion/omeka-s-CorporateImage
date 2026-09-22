@@ -32,7 +32,7 @@ ifeq ($(SYSTEM_OS),windows)
 	@echo "Detected system: Windows (cmd, powershell)"
 	@docker version > NUL 2>&1 || (echo. & echo Error: Docker is not running. Please make sure Docker is installed and running. & echo. & exit 1)
 else
-	@echo "Detected system: Unix (Linux/macOS/Cygwin/MinGW)"	
+	@echo "Detected system: Unix (Linux/macOS/Cygwin/MinGW)"
 	@docker version > /dev/null 2>&1 || (echo "" && echo "Error: Docker is not running. Please make sure Docker is installed and running." && echo "" && exit 1)
 endif
 
