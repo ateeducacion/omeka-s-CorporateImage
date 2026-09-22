@@ -1,7 +1,13 @@
 name: CI
 on:
   push:
+    paths-ignore:
+      - '.agents/skills/**'
+      - '.claude/skills/**'
   pull_request:
+    paths-ignore:
+      - '.agents/skills/**'
+      - '.claude/skills/**'
 permissions:
   contents: read
 jobs:
