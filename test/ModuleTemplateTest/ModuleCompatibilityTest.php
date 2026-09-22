@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+// Framework test doubles share this compatibility fixture.
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Laminas\Mvc\Controller {
     abstract class AbstractController
     {
@@ -16,13 +19,6 @@ namespace Laminas\Mvc\Controller {
         {
             return $this->paramsPlugin;
         }
-    }
-}
-
-namespace Laminas\ServiceManager {
-    interface ServiceLocatorInterface
-    {
-        public function get($name);
     }
 }
 
@@ -62,6 +58,19 @@ namespace Omeka\Stdlib {
     {
         public function __construct(string $message)
         {
+        }
+    }
+}
+
+namespace Laminas\View\Renderer {
+    class PhpRenderer
+    {
+        public $form;
+
+        public function formCollection($form, $wrap)
+        {
+            $this->form = $form;
+            return '<form>settings</form>';
         }
     }
 }
@@ -185,6 +194,36 @@ namespace ModuleTemplateTest {
             );
         }
 
+        public function testConfigFormReadsDefaultsAndStoredValues(): void
+        {
+            $module = new Module();
+            $settings = new GenericSettingsStub();
+            $module->setServiceLocator(new ServiceLocatorStub($settings));
+            $view = new \Laminas\View\Renderer\PhpRenderer();
+            $this->assertSame('<form>settings</form>', $module->getConfigForm($view));
+            $this->assertSame('', $view->form->get('personalized_header_html')->getValue());
+            $settings->set('personalized_header_footer_personalized_header_html', '<header>Stored</header>');
+            $module->getConfigForm($view);
+            $this->assertSame('<header>Stored</header>', $view->form->get('personalized_header_html')->getValue());
+            $this->assertIsArray($module->getConfig());
+        }
+
+        public function testInstallAndUninstallSynchronizeLegacyStorage(): void
+        {
+            $module = new Module();
+            $settings = new LegacyAwareSettingsStub();
+            $services = new ServiceLocatorStub($settings);
+            $module->install($services);
+            $this->assertSame('', $settings->getForModule(Module::NAMESPACE, 'personalized_header_html'));
+            $module->uninstall($services);
+            $this->assertNull($settings->getForModule(Module::NAMESPACE, 'personalized_header_html'));
+            $this->assertSame('fallback', $this->invokeModuleMethod(
+                $module,
+                'getModuleSetting',
+                [$settings, 'personalized_header_html', 'fallback']
+            ));
+        }
+
         /**
          * @param array<int, mixed> $arguments
          * @return mixed
@@ -205,6 +244,16 @@ namespace ModuleTemplateTest {
         public function __construct($settings)
         {
             $this->settings = $settings;
+        }
+
+        public function has($name): bool
+        {
+            return $name === 'Omeka\Settings';
+        }
+
+        public function build($name, ?array $options = null)
+        {
+            return $this->get($name);
         }
 
         public function get($name)

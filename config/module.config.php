@@ -13,8 +13,8 @@ return [
     ],
     'form_elements' => [
         'invokables' => [
-            // Form\SettingsFieldset::class => Form\SettingsFieldset::class, // Ensure these are needed or remove
-            // Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class, // Ensure these are needed or remove
+            // Form\SettingsFieldset::class => Form\SettingsFieldset::class,
+            // Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
         ],
     ],
     'translator' => [
