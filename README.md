@@ -1,5 +1,7 @@
 # CorporateImage for Omeka S
 
+[![codecov](https://codecov.io/gh/ateeducacion/omeka-s-CorporateImage/branch/main/graph/badge.svg)](https://codecov.io/gh/ateeducacion/omeka-s-CorporateImage)
+
 <a href="https://ateeducacion.github.io/omeka-s-playground/?blueprint=https%3A%2F%2Fraw.githubusercontent.com%2Fateeducacion%2Fomeka-s-CorporateImage%2Frefs%2Fheads%2Fmain%2Fblueprint.json">
   <img src="https://raw.githubusercontent.com/ateeducacion/omeka-s-CorporateImage/refs/heads/main/.github/assets/playground-preview-button.svg" alt="Try CorporateImage in your browser" width="224">
 </a><br>
@@ -41,3 +43,10 @@ omeka-s-CorporateImage/
 ## License
 
 GPL-3.0-or-later. See `LICENSE`.
+
+## Coverage
+
+Run `make test-coverage` with PCOV or Xdebug enabled. The target measures `Module.php`
+and all PHP code under `src/`, writes `coverage.xml`, and fails below 90% line
+coverage. CI uploads the report to Codecov using GitHub OIDC; both project and
+patch coverage targets are 90%.

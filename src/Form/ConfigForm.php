@@ -18,7 +18,8 @@ class ConfigForm extends Form
             'type' => Element\Textarea::class,
             'options' => [
                 'label' => 'Personalized Header HTML',
-                'info' => 'Enter the HTML content for the personalized header. This will be displayed at the top of public pages.',
+                'info' => 'Enter the HTML content for the personalized header. '
+                    . 'This will be displayed at the top of public pages.',
             ],
             'attributes' => [
                 'id' => 'personalized_header_html',
@@ -31,7 +32,8 @@ class ConfigForm extends Form
             'type' => Element\Textarea::class,
             'options' => [
                 'label' => 'Personalized Footer HTML',
-                'info' => 'Enter the HTML content for the personalized footer. This will be displayed at the bottom of public pages.',
+                'info' => 'Enter the HTML content for the personalized footer. '
+                    . 'This will be displayed at the bottom of public pages.',
             ],
             'attributes' => [
                 'id' => 'personalized_footer_html',

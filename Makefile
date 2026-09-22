@@ -32,7 +32,7 @@ ifeq ($(SYSTEM_OS),windows)
 	@echo "Detected system: Windows (cmd, powershell)"
 	@docker version > NUL 2>&1 || (echo. & echo Error: Docker is not running. Please make sure Docker is installed and running. & echo. & exit 1)
 else
-	@echo "Detected system: Unix (Linux/macOS/Cygwin/MinGW)"	
+	@echo "Detected system: Unix (Linux/macOS/Cygwin/MinGW)"
 	@docker version > /dev/null 2>&1 || (echo "" && echo "Error: Docker is not running. Please make sure Docker is installed and running." && echo "" && exit 1)
 endif
 
@@ -58,7 +58,7 @@ build: check-docker
 
 # Run the linter to check PHP code style
 lint:
-	"vendor/bin/phpcs" . --standard=PSR2 --ignore=vendor/,assets/,node_modules/,tests/js/,tests/ --colors --extensions=php
+	php vendor/bin/phpcs . --standard=PSR2 --ignore=vendor/,assets/,node_modules/,tests/js/,tests/ --colors --extensions=php
 
 # Automatically fix PHP code style issues
 fix:
@@ -180,3 +180,8 @@ help:
 
 # Set help as the default goal if no target is specified
 .DEFAULT_GOAL := help
+
+.PHONY: test-coverage
+test-coverage:
+	php -d pcov.directory=. vendor/bin/phpunit -c test/phpunit.xml --coverage-clover coverage.xml
+	php test/check-coverage.php coverage.xml 90
