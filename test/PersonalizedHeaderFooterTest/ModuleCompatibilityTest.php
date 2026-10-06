@@ -75,7 +75,7 @@ namespace Laminas\View\Renderer {
     }
 }
 
-namespace ModuleTemplateTest {
+namespace PersonalizedHeaderFooterTest {
     require_once dirname(__DIR__, 2) . '/Module.php';
 
     use Laminas\Mvc\Controller\AbstractController;

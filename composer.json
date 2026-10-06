@@ -1,6 +1,6 @@
 {
-    "name": "ateeducacion/omeka-s-moduletemplate",
-    "description": "Module template for Omeka S",
+    "name": "ateeducacion/omeka-s-corporateimage",
+    "description": "Custom HTML for the public header and footer of Omeka S sites",
     "type": "omeka-s-module",
     "license": "GPL-3.0-or-later",
     "authors": [
@@ -9,16 +9,15 @@
             "email": "ate.educacion@gobiernodecanarias.org"
         }
     ],
-    "homepage": "https://github.com/ateeducacion/omeka-s-ModuleTemplate",
+    "homepage": "https://github.com/ateeducacion/omeka-s-CorporateImage",
     "support": {
-        "issues": "https://github.com/ateeducacion/omeka-s-ModuleTemplate/issues"
+        "issues": "https://github.com/ateeducacion/omeka-s-CorporateImage/issues"
     },
     "keywords": [
         "Omeka S",
         "module",
-        "3D",
-        "three.js",
-        "model-viewer"
+        "header",
+        "footer"
     ],
     "require": {
         "php": ">=7.4"
@@ -46,7 +45,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ModuleTemplateTest\\": "test/"
+            "PersonalizedHeaderFooterTest\\": "test/PersonalizedHeaderFooterTest/"
         }
     },
     "repositories": [

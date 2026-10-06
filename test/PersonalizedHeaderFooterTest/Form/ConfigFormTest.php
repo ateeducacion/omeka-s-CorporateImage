@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace ModuleTemplateTest\Form;
+namespace PersonalizedHeaderFooterTest\Form;
 
 use Laminas\Form\Form;
 use PersonalizedHeaderFooter\Form\ConfigForm;

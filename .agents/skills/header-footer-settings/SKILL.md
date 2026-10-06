@@ -6,8 +6,8 @@ description: "Change custom header/footer configuration or legacy settings compa
 # Header and footer settings
 
 Start with root `Module.php`, `src/Form/ConfigForm.php`, and `config/module.config.php`.
-The actual namespace/module directory is `PersonalizedHeaderFooter`; Composer still contains
-legacy template metadata, so do not infer runtime names from its package description.
+The actual namespace/module directory is `PersonalizedHeaderFooter`; the repository and Composer
+package are named CorporateImage, so do not infer runtime names from them.
 
 - Trace form values through `setModuleSetting`, `getModuleSetting`, and `deleteModuleSetting`.
   Flat keys use `personalized_header_footer_`; optional module-scoped methods are compatibility paths.
@@ -19,5 +19,5 @@ legacy template metadata, so do not infer runtime names from its package descrip
   as implemented; adding a rendering hook is a feature, not a settings refactor.
 
 Run `make lint` and `make test`; cover legacy-only settings, empty values and uninstall behavior when changed.
-The current package recipe still names ModuleTemplate and rewrites the version: inspect it in an isolated
-checkout before a release, and do not treat a successful ZIP command as proof of the correct module layout.
+`make package VERSION=X.Y.Z` builds `PersonalizedHeaderFooter-X.Y.Z.zip` with a `PersonalizedHeaderFooter/`
+folder: Omeka loads `<folder>\Module`, so the folder must be the module id, not the repository name.

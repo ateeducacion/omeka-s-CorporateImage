@@ -25,7 +25,7 @@ jobs:
       - name: Upload ZIP to the release
         uses: softprops/action-gh-release@v3
         with:
-          files: CorporateImage-${{ env.RELEASE_TAG }}.zip
+          files: PersonalizedHeaderFooter-${{ env.RELEASE_TAG }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

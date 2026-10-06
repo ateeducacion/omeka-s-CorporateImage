@@ -72,7 +72,7 @@ shell: check-docker
 clean: check-docker
 	docker compose down -v --remove-orphans
 
-# Generate the ModuleTemplate-X.X.X.zip package
+# Generate the PersonalizedHeaderFooter-X.X.X.zip package (the folder is the module id)
 package:
 	@if [ -z "$(VERSION)" ]; then \
 		echo "Error: VERSION not specified. Use 'make package VERSION=1.2.3'"; \
@@ -80,11 +80,11 @@ package:
 	fi
 	@echo "Updating version to $(VERSION) in module.ini..."
 	$(SED_INPLACE) 's/^\([[:space:]]*version[[:space:]]*=[[:space:]]*\).*$$/\1"$(VERSION)"/' config/module.ini
-	@echo "Creating ZIP archive: CorporateImage-$(VERSION).zip..."
-	composer archive --format=zip --file="CorporateImage-$(VERSION)-raw"
+	@echo "Creating ZIP archive: PersonalizedHeaderFooter-$(VERSION).zip..."
+	composer archive --format=zip --file="PersonalizedHeaderFooter-$(VERSION)-raw"
 	@echo "Repacking into proper structure..."
-	mkdir -p tmpzip/CorporateImage && unzip -q CorporateImage-$(VERSION)-raw.zip -d tmpzip/CorporateImage && \
-	cd tmpzip && zip -qr ../CorporateImage-$(VERSION).zip CorporateImage && cd .. && rm -rf tmpzip CorporateImage-$(VERSION)-raw.zip
+	mkdir -p tmpzip/PersonalizedHeaderFooter && unzip -q PersonalizedHeaderFooter-$(VERSION)-raw.zip -d tmpzip/PersonalizedHeaderFooter && \
+	cd tmpzip && zip -qr ../PersonalizedHeaderFooter-$(VERSION).zip PersonalizedHeaderFooter && cd .. && rm -rf tmpzip PersonalizedHeaderFooter-$(VERSION)-raw.zip
 	@echo "Restoring version to 0.0.0 in module.ini..."
 	$(SED_INPLACE) 's/^\([[:space:]]*version[[:space:]]*=[[:space:]]*\).*$$/\1"0.0.0"/' config/module.ini
 

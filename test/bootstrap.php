@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace ModuleTemplateTest;
+namespace PersonalizedHeaderFooterTest;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
