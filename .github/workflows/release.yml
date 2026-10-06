@@ -1,0 +1,31 @@
+---
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v7
+
+      - name: Set environment variables
+        run: |
+          # module.ini must carry a bare version. Omeka's addon directory shows
+          # that number, so strip a leading "v" if the tag ever uses one.
+          TAG="${GITHUB_REF##*/}"
+          echo "RELEASE_TAG=${TAG#v}" >> $GITHUB_ENV
+
+      - name: Create package using the Makefile
+        run: make package VERSION=${RELEASE_TAG}
+
+      - name: Upload ZIP to the release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: CorporateImage-${{ env.RELEASE_TAG }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

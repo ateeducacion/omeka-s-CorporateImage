@@ -80,8 +80,11 @@ package:
 	fi
 	@echo "Updating version to $(VERSION) in module.ini..."
 	$(SED_INPLACE) 's/^\([[:space:]]*version[[:space:]]*=[[:space:]]*\).*$$/\1"$(VERSION)"/' config/module.ini
-	@echo "Creating ZIP archive: ModuleTemplate-$(VERSION).zip..."
-	composer archive --format=zip --file="ModuleTemplate-$(VERSION)"
+	@echo "Creating ZIP archive: CorporateImage-$(VERSION).zip..."
+	composer archive --format=zip --file="CorporateImage-$(VERSION)-raw"
+	@echo "Repacking into proper structure..."
+	mkdir -p tmpzip/CorporateImage && unzip -q CorporateImage-$(VERSION)-raw.zip -d tmpzip/CorporateImage && \
+	cd tmpzip && zip -qr ../CorporateImage-$(VERSION).zip CorporateImage && cd .. && rm -rf tmpzip CorporateImage-$(VERSION)-raw.zip
 	@echo "Restoring version to 0.0.0 in module.ini..."
 	$(SED_INPLACE) 's/^\([[:space:]]*version[[:space:]]*=[[:space:]]*\).*$$/\1"0.0.0"/' config/module.ini
 
